@@ -11,6 +11,9 @@ type KeyData struct {
 	Keys []string `json:"keys"`
 }
 
+func serveHTML(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "piano_interval_fetch.html")
+}
 func handlePost(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -40,8 +43,10 @@ func handlePost(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(response)
 }
-
 func main() {
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	http.HandleFunc("/", serveHTML)
 	http.HandleFunc("/api/keydata", handlePost)
 	fmt.Println("Server starting on port 3000...")
 	log.Fatal(http.ListenAndServe(":3000", nil))

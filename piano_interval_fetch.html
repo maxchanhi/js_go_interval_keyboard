@@ -61,7 +61,7 @@
     <div id="key-display">No keys pressed</div>
     <div id="interval-display"></div>
 
-    <script src="key_data.js"></script>
+    <script src="/static/key_data.js"></script>
     <script>
         const piano = document.querySelector('.piano');
         const keyDisplay = document.getElementById('key-display');
@@ -118,7 +118,7 @@
         }
 
         function sendDataToBackend(data) {
-            fetch('http://loclhost:3000/api/keydata', {
+            fetch('http://localhost:3000/api/keydata', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
